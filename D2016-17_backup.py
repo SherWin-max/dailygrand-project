@@ -495,18 +495,6 @@ def compute_pairs_threshold(
     df = df.sort_values(["count", "pair"], ascending=[False, True]).reset_index(drop=True)
     return df
 
-def make_sorted_main_stats(main_stats: pd.DataFrame, sort_by: str = "number", ascending: bool = True) -> pd.DataFrame:
-       """
-       Returns a sorted copy of the main_stats table.
-       sort_by options: number, frequency, current_gap_draws, last_seen_draw_index
-       """
-       allowed = {"number", "frequency", "current_gap_draws", "last_seen_draw_index"}
-       if sort_by not in allowed:
-        raise ValueError(f"Invalid sort_by={sort_by}. Allowed: {sorted(list(allowed))}")
-
-       # tie-breaker: number
-       df = main_stats.sort_values([sort_by, "number"], ascending=[ascending, True]).reset_index(drop=True).copy()
-       return df
 
 # ------------------------------------------------------------
 # Reporting / Export
@@ -605,7 +593,6 @@ def main():
 
     # Compute outputs
     main_stats = compute_main_stats_1_49(main_matrix, dates)
-    main_stats_sorted = make_sorted_main_stats(main_stats, sort_by="frequency", ascending=True)
     hot_top10 = compute_hot_top10(main_stats)
     cold_bottom10 = compute_cold_bottom10(main_stats)
 
@@ -637,7 +624,6 @@ def main():
         SHEET_VALIDATION: validation_report,
         SHEET_WINDOW_DATA: window_df,  # stored in Excel only
         SHEET_MAIN_STATS: main_stats,
-        SHEET_MAIN_STATS_SORTED: main_stats_sorted,
         SHEET_HOT_TOP10: hot_top10,
         SHEET_COLD_BOTTOM10: cold_bottom10,
         SHEET_GRAND_STATS: grand_stats,
@@ -671,9 +657,6 @@ def main():
         SHEET_OVERLAP_HIST,
         SHEET_PAIRS,
         SHEET_MAIN_STATS,  # keep this last because it's long (1..49)
-        SHEET_MAIN_STATS_SORTED,
-
-        
     ]
 
     print_selected_sheets_to_terminal(sheets, terminal_sheets)
