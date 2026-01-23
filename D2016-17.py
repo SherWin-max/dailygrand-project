@@ -48,7 +48,7 @@ SHEET_META = "00_META"
 SHEET_VALIDATION = "01_VALIDATION"
 SHEET_WINDOW_DATA = "02_WINDOW_DATA"
 SHEET_MAIN_STATS = "03_MAIN_STATS_1_49"
-SHEET_MAIN_STATS_SORTED = "03B_MAIN_STATS_SORTED"
+SHEET_MAIN_STATS_SORTED = "03B_MAIN_STATS_SORTED_BY_FREQ"
 SHEET_HOT_TOP10 = "04_HOT_TOP10"
 SHEET_COLD_BOTTOM10 = "05_COLD_BOTTOM10"
 SHEET_GRAND_STATS = "07_GRAND_STATS_1_7"
@@ -606,7 +606,7 @@ def main():
 
     # Compute outputs
     main_stats = compute_main_stats_1_49(main_matrix, dates)
-    main_stats_sorted = make_sorted_main_stats(main_stats, sort_by="number", ascending=True)
+    main_stats_sorted = make_sorted_main_stats(main_stats, sort_by="frequency", ascending=False)
     hot_top10 = compute_hot_top10(main_stats)
     cold_bottom10 = compute_cold_bottom10(main_stats)
 
